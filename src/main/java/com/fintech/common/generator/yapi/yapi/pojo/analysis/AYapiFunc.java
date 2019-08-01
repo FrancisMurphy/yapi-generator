@@ -1,4 +1,4 @@
-package com.fintech.common.generator.api.yapi.pojo.analysis;
+package com.fintech.common.generator.yapi.yapi.pojo.analysis;
 
 import lombok.Data;
 

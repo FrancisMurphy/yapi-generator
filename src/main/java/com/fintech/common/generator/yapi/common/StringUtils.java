@@ -1,4 +1,4 @@
-package com.fintech.common.generator.api.common;
+package com.fintech.common.generator.yapi.common;
 
 public class StringUtils
 {

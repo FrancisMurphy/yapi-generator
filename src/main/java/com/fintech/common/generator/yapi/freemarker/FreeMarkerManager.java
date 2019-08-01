@@ -1,8 +1,8 @@
-package com.fintech.common.generator.api.freemarker;
+package com.fintech.common.generator.yapi.freemarker;
 
-import com.fintech.common.generator.api.common.StringUtils;
-import com.fintech.common.generator.api.yapi.pojo.analysis.AYapiFunc;
-import com.fintech.common.generator.api.yapi.pojo.analysis.AYapiObject;
+import com.fintech.common.generator.yapi.common.StringUtils;
+import com.fintech.common.generator.yapi.yapi.pojo.analysis.AYapiFunc;
+import com.fintech.common.generator.yapi.yapi.pojo.analysis.AYapiObject;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;

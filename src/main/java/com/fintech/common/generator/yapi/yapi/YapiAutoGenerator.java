@@ -1,9 +1,9 @@
-package com.fintech.common.generator.api.yapi;
+package com.fintech.common.generator.yapi.yapi;
 
-import com.fintech.common.generator.api.freemarker.FreeMarkerManager;
-import com.fintech.common.generator.api.yapi.pojo.original.YapiInterface;
-import com.fintech.common.generator.api.yapi.parser.YapiDtoParser;
-import com.fintech.common.generator.api.yapi.parser.YapiInterfaceParser;
+import com.fintech.common.generator.yapi.freemarker.FreeMarkerManager;
+import com.fintech.common.generator.yapi.yapi.pojo.original.YapiInterface;
+import com.fintech.common.generator.yapi.yapi.parser.YapiDtoParser;
+import com.fintech.common.generator.yapi.yapi.parser.YapiInterfaceParser;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;

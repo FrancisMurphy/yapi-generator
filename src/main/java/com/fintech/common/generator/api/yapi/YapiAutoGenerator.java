@@ -1,11 +1,11 @@
 package com.fintech.common.generator.api.yapi;
 
 import com.fintech.common.generator.api.freemarker.FreeMarkerManager;
-import com.fintech.common.generator.api.mongodb.doc.YapiInterface;
-import com.fintech.common.generator.api.yapi.pojo.common.*;
+import com.fintech.common.generator.api.yapi.pojo.original.YapiInterface;
+import com.fintech.common.generator.api.yapi.parser.YapiDtoParser;
+import com.fintech.common.generator.api.yapi.parser.YapiInterfaceParser;
 import freemarker.template.TemplateException;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -13,21 +13,35 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
 
 /**
  * 根据Yapi注册信息自动生成基于接口代码
  * @author F&K
  */
 @Service
-public class YapiAutoGenerator
+public class YapiAutoGenerator implements InitializingBean
 {
     @Autowired
     private MongoTemplate mongoTemplate;
 
     private FreeMarkerManager freeMarkerManager;
+
+    private YapiDtoParser yapiDtoParser;
+
+    private YapiInterfaceParser yapiInterfaceParser;
+
+    @Override
+    public void afterPropertiesSet() throws Exception
+    {
+        freeMarkerManager = FreeMarkerManager.getInstance();
+        freeMarkerManager.init();
+
+        yapiDtoParser = YapiDtoParser.getInstance();
+        yapiDtoParser.init();
+
+        yapiInterfaceParser = YapiInterfaceParser.getInstance();
+        yapiInterfaceParser.init();
+    }
 
     /**
      * 自动生成触发接口
@@ -36,9 +50,6 @@ public class YapiAutoGenerator
             String interfaceName,String msName)
             throws IOException, TemplateException
     {
-        freeMarkerManager = FreeMarkerManager.getInstance();
-        freeMarkerManager.init();
-
         //进行解析
         dealYapiDescribe(interfaceId, pkg,funcName,
                 interfaceName,msName);
@@ -49,7 +60,7 @@ public class YapiAutoGenerator
      * @param interfaceId
      * @throws IOException
      */
-    private AYapiFunc dealYapiDescribe(Long interfaceId,String pkg,
+    private void dealYapiDescribe(Long interfaceId,String pkg,
             String funcName,String interfaceName,String msName)
             throws IOException, TemplateException
     {
@@ -59,133 +70,122 @@ public class YapiAutoGenerator
                         YapiInterface.class);
 
         //Step2:生成dto
-        dealInterface(pkg, funcName,interfaceName ,targetInterface,msName);
-
-        return null;
+        yapiInterfaceParser.dealInterface(pkg, funcName,interfaceName ,targetInterface,msName);
     }
 
-    /**
-     * 解析并且生成对应的dto
-     * @param pkg 基础包名
-     * @param funcName 接口名
-     * @param targetInterface
-     * @throws IOException
-     * @throws TemplateException
-     */
-    private void dealInterface(String pkg, String funcName,
-            String interfaceName, YapiInterface targetInterface,
-            String msName)
-            throws IOException, TemplateException
-    {
-        final String resBody = targetInterface.getResBody();
-        final String reqBody = targetInterface.getReqBodyOther();
-        final String path = targetInterface.getPath();
-        final String title = targetInterface.getTitle();
+//    /**
+//     * 解析并且生成对应的dto
+//     * @param pkg 基础包名
+//     * @param funcName 接口名
+//     * @param targetInterface
+//     * @throws IOException
+//     * @throws TemplateException
+//     */
+//    private void dealInterface(String pkg, String funcName,
+//            String interfaceName, YapiInterface targetInterface,
+//            String msName)
+//            throws IOException, TemplateException
+//    {
+//        final String resBody = targetInterface.getResBody();
+//        final String reqBody = targetInterface.getReqBodyOther();
+//        final String path = targetInterface.getPath();
+//        final String title = targetInterface.getTitle();
+//
+//        final String upperCaseName = getUpperCase(funcName);
+//
+//        AYapiFunc aYapiFunc = new AYapiFunc();
+//        aYapiFunc.setId(targetInterface.getId());
+//        aYapiFunc.setPkg(pkg);
+//        aYapiFunc.setName(funcName);
+//        aYapiFunc.setUpperCaseName(upperCaseName);
+//        aYapiFunc.setPath(path);
+//        aYapiFunc.setDesc(title);
+//        aYapiFunc.setDtoPkg(pkg+".dto");
+//        aYapiFunc.setReqDesc("请求");
+//        aYapiFunc.setRespDesc("响应");
+//
+//        aYapiFunc.setMsDesc(title);
+//        aYapiFunc.setMsInterface(interfaceName);
+//        aYapiFunc.setMsName(msName);
+//
+//        generateDto(pkg, resBody, upperCaseName, "Resp");
+//        generateDto(pkg, reqBody, upperCaseName, "Req");
+//
+//        //生成resp代码
+//        freeMarkerManager.parseInterface(pkg,aYapiFunc);
+//    }
 
-        final String upperCaseName = getUpperCase(funcName);
-
-        AYapiFunc aYapiFunc = new AYapiFunc();
-        aYapiFunc.setId(targetInterface.getId());
-        aYapiFunc.setPkg(pkg);
-        aYapiFunc.setName(funcName);
-        aYapiFunc.setUpperCaseName(upperCaseName);
-        aYapiFunc.setPath(path);
-        aYapiFunc.setDesc(title);
-        aYapiFunc.setDtoPkg(pkg+".dto");
-        aYapiFunc.setReqDesc("请求");
-        aYapiFunc.setRespDesc("响应");
-
-        aYapiFunc.setMsDesc(title);
-        aYapiFunc.setMsInterface(interfaceName);
-        aYapiFunc.setMsName(msName);
-
-        generateDto(pkg, resBody, upperCaseName, "Resp");
-        generateDto(pkg, reqBody, upperCaseName, "Req");
-
-        //生成resp代码
-        freeMarkerManager.parseInterface(pkg,aYapiFunc);
-    }
-
-    private void generateDto(final String pkg, final String dtoBody,
-            final String upperCaseName,final String dtoSuffix)
-            throws IOException, TemplateException
-    {
-        //解析
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(
-                DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES,
-                false);
-
-        //反序列化dto
-        YapiDto dto = objectMapper.readValue(dtoBody, YapiDto.class);
-
-        //初始化resp
-        AYapiObject aYapiObject = new AYapiObject();
-        aYapiObject.setClazz(upperCaseName+dtoSuffix);
-        aYapiObject.setDesc(dto.getTitle());
-        aYapiObject.setName(upperCaseName+dtoSuffix);
-        aYapiObject.setProperties(new ArrayList<>(dto.getProperties().size()));
-        aYapiObject.setImportPkg(new HashSet<>());
-
-        //解析成员并且生成成员对象代码
-        recursiveParsingField(dto.getProperties(), aYapiObject, pkg);
-
-        //生成resp代码
-        freeMarkerManager.parsePojo(pkg,aYapiObject);
-    }
-
-    private void recursiveParsingField(Map<String, YapiObject> properties, AYapiObject aYapiFatherObject,
-            String basePkg) throws IOException, TemplateException
-    {
-        for(Map.Entry<String, YapiObject> entry : properties.entrySet())
-        {
-            final String propertyName = entry.getKey();
-            final YapiObject property = entry.getValue();
-
-            //基础数据类型
-            if(!(property.getType().equals(YapiDataType.OBJECT)
-                    ||property.getType().equals(YapiDataType.NULL)))
-            {
-                //获取需要引入基础数据包名
-                String pkgNeedImport = property.getType().getClazz().getName();
-                aYapiFatherObject.getImportPkg().add(pkgNeedImport);
-
-                AYapiBasicData aYapiBasicData = new AYapiObject();
-                aYapiBasicData.setClazz(property.getType().getClazz().getSimpleName());
-                aYapiBasicData.setName(propertyName);
-                aYapiBasicData.setDesc(property.getDescription());
-
-                aYapiFatherObject.getProperties().add(aYapiBasicData);
-            }
-            //引用数据类型 递归
-            else if(property.getType().equals(YapiDataType.OBJECT))
-            {
-                //由于模版中会自动添加上对应接口req或者resp的包名引用，所以显式不用添加
-                AYapiObject aYapiFieldObject = new AYapiObject();
-                aYapiFieldObject.setProperties(new ArrayList<>(property.getProperties().size()));
-                aYapiFieldObject.setClazz(getUpperCase(propertyName));
-                aYapiFieldObject.setDesc(property.getDescription());
-                aYapiFieldObject.setName(propertyName);
-                aYapiFieldObject.setImportPkg(new HashSet<>());
-
-                //递归解析成员
-                recursiveParsingField(property.getProperties(),aYapiFieldObject,basePkg);
-
-                //生成dto.java
-                freeMarkerManager.parsePojo(basePkg,aYapiFieldObject);
-
-                aYapiFatherObject.getProperties().add(aYapiFieldObject);
-            }
-        }
-    }
-
-    public String getUpperCase(String humpName)
-    {
-        char[] chars = humpName.toCharArray();
-        if (chars[0] >= 'a' && chars[0] <= 'z') {
-            chars[0] = (char)(chars[0] - 32);
-        }
-        return new String(chars);
-    }
+//    private void generateDto(final String pkg, final String dtoBody,
+//            final String upperCaseName,final String dtoSuffix)
+//            throws IOException, TemplateException
+//    {
+//        //解析
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.configure(
+//                DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES,
+//                false);
+//
+//        //反序列化dto
+//        YapiDto dto = objectMapper.readValue(dtoBody, YapiDto.class);
+//
+//        //初始化resp
+//        AYapiObject aYapiObject = new AYapiObject();
+//        aYapiObject.setClazz(upperCaseName+dtoSuffix);
+//        aYapiObject.setDesc(dto.getTitle());
+//        aYapiObject.setName(upperCaseName+dtoSuffix);
+//        aYapiObject.setProperties(new ArrayList<>(dto.getProperties().size()));
+//        aYapiObject.setImportPkg(new HashSet<>());
+//
+//        //解析成员并且生成成员对象代码
+//        recursiveParsingField(dto.getProperties(), aYapiObject, pkg);
+//
+//        //生成resp代码
+//        freeMarkerManager.parsePojo(pkg,aYapiObject);
+//    }
+//
+//    private void recursiveParsingField(Map<String, YapiObject> properties, AYapiObject aYapiFatherObject,
+//            String basePkg) throws IOException, TemplateException
+//    {
+//        for(Map.Entry<String, YapiObject> entry : properties.entrySet())
+//        {
+//            final String propertyName = entry.getKey();
+//            final YapiObject property = entry.getValue();
+//
+//            //基础数据类型
+//            if(!(property.getType().equals(YapiDataType.OBJECT)
+//                    ||property.getType().equals(YapiDataType.NULL)))
+//            {
+//                //获取需要引入基础数据包名
+//                String pkgNeedImport = property.getType().getClazz().getName();
+//                aYapiFatherObject.getImportPkg().add(pkgNeedImport);
+//
+//                AYapiBasicData aYapiBasicData = new AYapiObject();
+//                aYapiBasicData.setClazz(property.getType().getClazz().getSimpleName());
+//                aYapiBasicData.setName(propertyName);
+//                aYapiBasicData.setDesc(property.getDescription());
+//
+//                aYapiFatherObject.getProperties().add(aYapiBasicData);
+//            }
+//            //引用数据类型 递归
+//            else if(property.getType().equals(YapiDataType.OBJECT))
+//            {
+//                //由于模版中会自动添加上对应接口req或者resp的包名引用，所以显式不用添加
+//                AYapiObject aYapiFieldObject = new AYapiObject();
+//                aYapiFieldObject.setProperties(new ArrayList<>(property.getProperties().size()));
+//                aYapiFieldObject.setClazz(getUpperCase(propertyName));
+//                aYapiFieldObject.setDesc(property.getDescription());
+//                aYapiFieldObject.setName(propertyName);
+//                aYapiFieldObject.setImportPkg(new HashSet<>());
+//
+//                //递归解析成员
+//                recursiveParsingField(property.getProperties(),aYapiFieldObject,basePkg);
+//
+//                //生成dto.java
+//                freeMarkerManager.parsePojo(basePkg,aYapiFieldObject);
+//
+//                aYapiFatherObject.getProperties().add(aYapiFieldObject);
+//            }
+//        }
+//    }
 
 }

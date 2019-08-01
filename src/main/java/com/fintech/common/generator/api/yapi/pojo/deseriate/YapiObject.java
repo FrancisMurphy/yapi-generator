@@ -1,7 +1,7 @@
 /**
   * Copyright 2019 bejson.com
   */
-package com.fintech.common.generator.api.yapi.pojo.common;
+package com.fintech.common.generator.api.yapi.pojo.deseriate;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

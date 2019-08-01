@@ -1,4 +1,4 @@
-package com.fintech.common.generator.api.mongodb.doc;
+package com.fintech.common.generator.api.yapi.pojo.original;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

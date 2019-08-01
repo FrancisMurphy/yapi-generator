@@ -1,7 +1,8 @@
 package com.fintech.common.generator.api.freemarker;
 
-import com.fintech.common.generator.api.yapi.pojo.common.AYapiFunc;
-import com.fintech.common.generator.api.yapi.pojo.common.AYapiObject;
+import com.fintech.common.generator.api.common.StringUtils;
+import com.fintech.common.generator.api.yapi.pojo.analysis.AYapiFunc;
+import com.fintech.common.generator.api.yapi.pojo.analysis.AYapiObject;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -73,7 +74,7 @@ public class FreeMarkerManager
             dirFile.mkdirs();
         }
 
-        File pojoFile = new File(baseClazzPath+dtoPath+"dto/"+getUpperCase(aYapiObject.getName()) + ".java");
+        File pojoFile = new File(baseClazzPath+dtoPath+"dto/" + StringUtils.getUpperCase(aYapiObject.getName()) + ".java");
         if(!pojoFile.exists())
         {
             pojoFile.createNewFile();
@@ -118,7 +119,7 @@ public class FreeMarkerManager
             dirFile.mkdirs();
         }
 
-        File pojoFile = new File(baseClazzPath+dtoPath+getUpperCase(aYapiFunc.getMsInterface()) + ".java");
+        File pojoFile = new File(baseClazzPath+dtoPath + StringUtils.getUpperCase(aYapiFunc.getMsInterface()) + ".java");
         if(!pojoFile.exists())
         {
             pojoFile.createNewFile();
@@ -161,17 +162,6 @@ public class FreeMarkerManager
         }
         return dtoPath;
     }
-
-    public String getUpperCase(String humpName)
-    {
-        char[] chars = humpName.toCharArray();
-        if (chars[0] >= 'a' && chars[0] <= 'z') {
-            chars[0] = (char)(chars[0] - 32);
-        }
-        return new String(chars);
-    }
-
-
 
     /**
      * 单例

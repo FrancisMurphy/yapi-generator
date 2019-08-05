@@ -7,11 +7,11 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.Getter;
+import org.apache.commons.io.FileUtils;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.FileSystemUtils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,8 +31,6 @@ public class FreeMarkerManager
      */
     private Template interfaceTemplate;
 
-    private String tempPath;
-
     @Getter
     private String baseClazzPath;
 
@@ -41,14 +39,12 @@ public class FreeMarkerManager
         Configuration configuration = new Configuration(Configuration.getVersion());
         ClassLoader classLoader = FreeMarkerManager.class.getClassLoader();
 
-        URL classpathUrl = classLoader.getResource("ftl");
-        tempPath = classpathUrl.getPath();
-
         URL baseClazzUrl = classLoader.getResource("");
         baseClazzPath = baseClazzUrl.getPath();
 
-        configuration.setDirectoryForTemplateLoading(new File(tempPath));
+        configuration.setClassForTemplateLoading(this.getClass(),"/ftl");
         configuration.setDefaultEncoding("utf-8");
+
         pojoTemplate = configuration.getTemplate("AYapiPojo.ftl");
         interfaceTemplate =  configuration.getTemplate("AYapiInterface.ftl");
     }
@@ -70,13 +66,13 @@ public class FreeMarkerManager
         String dtoPath = getPathByPkg(basePkg);
 
         //判断文件夹是否存在，如果不存在则创建
-        File dirFile = new File(baseClazzPath+dtoPath+"dto");
+        File dirFile = new File(dtoPath+"dto");
         if(!dirFile.exists())
         {
             dirFile.mkdirs();
         }
 
-        File pojoFile = new File(baseClazzPath+dtoPath+"dto/" + StringUtils.getUpperCase(aYapiObject.getName()) + ".java");
+        File pojoFile = new File(dtoPath+"dto/" + StringUtils.getUpperCase(aYapiObject.getName()) + ".java");
         if(!pojoFile.exists())
         {
             pojoFile.createNewFile();
@@ -115,13 +111,14 @@ public class FreeMarkerManager
         String dtoPath = getPathByPkg(basePkg);
 
         //判断文件夹是否存在，如果不存在则创建
-        File dirFile = new File(baseClazzPath+dtoPath);
+
+        File dirFile = new File(dtoPath);
         if(!dirFile.exists())
         {
             dirFile.mkdirs();
         }
 
-        File pojoFile = new File(baseClazzPath+dtoPath + StringUtils.getUpperCase(aYapiFunc.getMsInterface()) + ".java");
+        File pojoFile = new File(dtoPath + StringUtils.getUpperCase(aYapiFunc.getMsInterface()) + ".java");
         if(!pojoFile.exists())
         {
             pojoFile.createNewFile();

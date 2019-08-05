@@ -5,6 +5,7 @@ import org.springframework.util.StringUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 
@@ -21,10 +22,11 @@ public class YapiGeneratorConfig
 
         //获取上级目录中的yapiGenerator.properties
         File classpathDir = new File(classpath);
-        String parentDirPath = classpathDir.getParent();
+        String parentDirPath = classpathDir.getParentFile().getParentFile().getParent();
         Properties yapiConfigProperties = new Properties();
-        FileInputStream in = new FileInputStream(parentDirPath+"/yapiGenerator.properties");
-        yapiConfigProperties.load(in);
+        FileInputStream inputStream = new FileInputStream("yapiGenerator.properties");
+//        FileInputStream in = new FileInputStream(parentDirPath+"/yapiGenerator.properties");
+        yapiConfigProperties.load(inputStream);
 
 //        interface.id=1028
 //        interface.pkg=com.frank.test

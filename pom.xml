@@ -55,6 +55,12 @@
             <artifactId>freemarker</artifactId>
             <version>2.3.23</version>
         </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -128,9 +134,17 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <fork>true</fork>
                     <mainClass>com.fintech.common.generator.yapi.YapiGeneratorApplication</mainClass>
+                    <finalName>${project.name}</finalName>
+<!--                    <skip>true</skip>-->
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

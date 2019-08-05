@@ -1,12 +1,12 @@
-package com.fintech.common.generator.yapi.yapi.parser;
+package com.fintech.common.generator.yapi.parser;
 
 import com.fintech.common.generator.yapi.common.StringUtils;
-import com.fintech.common.generator.yapi.freemarker.FreeMarkerManager;
-import com.fintech.common.generator.yapi.yapi.pojo.analysis.AYapiBasicData;
-import com.fintech.common.generator.yapi.yapi.pojo.analysis.AYapiObject;
-import com.fintech.common.generator.yapi.yapi.pojo.deseriate.YapiDataType;
-import com.fintech.common.generator.yapi.yapi.pojo.deseriate.YapiDto;
-import com.fintech.common.generator.yapi.yapi.pojo.deseriate.YapiObject;
+import com.fintech.common.generator.yapi.manager.FreeMarkerManager;
+import com.fintech.common.generator.yapi.pojo.analysis.AYapiBasicData;
+import com.fintech.common.generator.yapi.pojo.analysis.AYapiObject;
+import com.fintech.common.generator.yapi.pojo.deseriate.YapiDataType;
+import com.fintech.common.generator.yapi.pojo.deseriate.YapiDto;
+import com.fintech.common.generator.yapi.pojo.deseriate.YapiObject;
 import freemarker.template.TemplateException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;

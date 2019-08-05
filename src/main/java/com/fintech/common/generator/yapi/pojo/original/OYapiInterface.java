@@ -1,4 +1,4 @@
-package com.fintech.common.generator.yapi.yapi.pojo.original;
+package com.fintech.common.generator.yapi.pojo.original;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -13,7 +13,7 @@ import java.util.StringJoiner;
  */
 @Data
 @Document(collection = "interface")
-public class YapiInterface implements Serializable
+public class OYapiInterface implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
@@ -46,7 +46,7 @@ public class YapiInterface implements Serializable
     public String toString()
     {
         return new StringJoiner(", ",
-                YapiInterface.class.getSimpleName() + "[", "]")
+                OYapiInterface.class.getSimpleName() + "[", "]")
                 .add("id='" + id + "'")
                 .add("projectId='" + projectId + "'")
                 .add("title='" + title + "'")

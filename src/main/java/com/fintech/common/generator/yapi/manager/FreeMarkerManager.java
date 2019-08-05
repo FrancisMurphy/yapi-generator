@@ -1,11 +1,12 @@
-package com.fintech.common.generator.yapi.freemarker;
+package com.fintech.common.generator.yapi.manager;
 
 import com.fintech.common.generator.yapi.common.StringUtils;
-import com.fintech.common.generator.yapi.yapi.pojo.analysis.AYapiFunc;
-import com.fintech.common.generator.yapi.yapi.pojo.analysis.AYapiObject;
+import com.fintech.common.generator.yapi.pojo.analysis.AYapiFunc;
+import com.fintech.common.generator.yapi.pojo.analysis.AYapiObject;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import lombok.Getter;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -32,6 +33,7 @@ public class FreeMarkerManager
 
     private String tempPath;
 
+    @Getter
     private String baseClazzPath;
 
     public void init() throws IOException
@@ -163,9 +165,6 @@ public class FreeMarkerManager
         return dtoPath;
     }
 
-    /**
-     * 单例
-     */
     private static FreeMarkerManager instance = new FreeMarkerManager();
 
     private FreeMarkerManager()

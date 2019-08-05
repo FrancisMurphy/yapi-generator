@@ -1,9 +1,9 @@
-package com.fintech.common.generator.yapi.yapi.parser;
+package com.fintech.common.generator.yapi.parser;
 
 import com.fintech.common.generator.yapi.common.StringUtils;
-import com.fintech.common.generator.yapi.freemarker.FreeMarkerManager;
-import com.fintech.common.generator.yapi.yapi.pojo.original.YapiInterface;
-import com.fintech.common.generator.yapi.yapi.pojo.analysis.AYapiFunc;
+import com.fintech.common.generator.yapi.manager.FreeMarkerManager;
+import com.fintech.common.generator.yapi.pojo.original.OYapiInterface;
+import com.fintech.common.generator.yapi.pojo.analysis.AYapiFunc;
 import freemarker.template.TemplateException;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class YapiInterfaceParser
      * @throws TemplateException
      */
     public void dealInterface(String pkg, String funcName,
-            String interfaceName, YapiInterface targetInterface,
+            String interfaceName, OYapiInterface targetInterface,
             String msName)
             throws IOException, TemplateException
     {

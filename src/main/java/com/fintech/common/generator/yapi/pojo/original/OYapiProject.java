@@ -1,4 +1,4 @@
-package com.fintech.common.generator.yapi.yapi.pojo.original;
+package com.fintech.common.generator.yapi.pojo.original;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Data
 @Document(collection = "project")
-public class Project implements Serializable
+public class OYapiProject implements Serializable
 {
     private static final long serialVersionUID = 1L;
 

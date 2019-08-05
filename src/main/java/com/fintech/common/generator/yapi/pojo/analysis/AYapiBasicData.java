@@ -1,4 +1,4 @@
-package com.fintech.common.generator.yapi.yapi.pojo.analysis;
+package com.fintech.common.generator.yapi.pojo.analysis;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

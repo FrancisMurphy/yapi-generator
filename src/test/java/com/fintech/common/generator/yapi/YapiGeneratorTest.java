@@ -1,6 +1,5 @@
 package com.fintech.common.generator.yapi;
 
-import com.fintech.common.generator.yapi.yapi.YapiAutoGenerator;
 import freemarker.template.TemplateException;
 import org.junit.Test;
 import org.junit.runner.RunWith;

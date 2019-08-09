@@ -1,4 +1,4 @@
-Yapi-Generator
+Yapi-Generator 1.0
 ====
 微服务接口代码生成工具
 ## 简介

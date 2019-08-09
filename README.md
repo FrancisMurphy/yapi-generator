@@ -67,8 +67,8 @@ interface:
 ![single-structure](./img/single-structure.png "single-structure")
 
 #### 批量接口生成模式
-未上线
+还未发布
 
 #### 自动生成模式
-未上线
+还未发布
 

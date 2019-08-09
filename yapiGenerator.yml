@@ -1,0 +1,21 @@
+#基础配置
+################# mongodb ##################
+yapi:
+  mongodb:
+    host: 127.0.0.1
+    port: 27017
+    database: yapi
+
+#代码生成配置
+################ generator ##################
+interface:
+  ##接口id，id可以从yapi接口url上获取 e.g: http://127.xx.xx.xx:3000/project/{project.id}/interface/api/{interface.id}
+  id: 1031
+  ##新建代码的所属包名
+  pkg: com.frank.test
+  ##接口名称
+  name: TestApi
+  ##方法名称
+  funcname: testFunc
+  ##接口所属微服务的服务名称
+  msname: TEST-MS

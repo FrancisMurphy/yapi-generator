@@ -1,5 +1,7 @@
 package ${pkg};
 
+import lombok.Data;
+
 import ${pkg}.*;
 
 /**
@@ -11,7 +13,7 @@ public class ${pojo.clazz}
 {
     <#list pojo.properties as property>
        /**
-         * ${property.desc}
+         * ${(property.desc)!"Can not get desc"}
          **/
         private ${property.clazz} ${property.name};
     </#list>

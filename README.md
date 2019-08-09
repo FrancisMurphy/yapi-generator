@@ -1,11 +1,11 @@
 Yapi-Generator
 ====
 微服务接口代码生成工具
-##简介
+## 简介
 三个问题
-####1.这是什么？
+#### 1.这是什么？
 这是一个代码生成器，概念上与常用的Mybatis-Generator类似；
-####2.这工具能干什么？
+#### 2.这工具能干什么？
 将Yapi上的接口注册信息(如下图)
 
 ![yapi-screenshot](./img/yapi-screenshot.png "yapi-screenshot")
@@ -18,10 +18,10 @@ Yapi-Generator
 
 ![config-screenshot](./img/config-screenshot.png "config-screenshot")
 
-####3.为什么要用这个工具？
+#### 3.为什么要用这个工具？
 开发人员需要将有限的精力集中在业务，而不是重复代码的实现；
-#使用指导
-###快速开始
+# 使用指导
+### 快速开始
 1.将yapi-generator.zip解压到一个文件夹
 
 2.打开命令台运行以下命令
@@ -29,7 +29,7 @@ Yapi-Generator
 java -jar yapi-generator.jar
 ```
 3.在当前文件夹获取生成好的代码
-##模式
+## 模式
 Yapi-generator拥有直接生成可运行代码的能力，只需要极少的几个参数，就可以生成基于FeignClient的Restful接口，
 并且可以生成request、respond中所依赖的Pojo(生成代码的基础结构如下图)；
 
@@ -37,7 +37,7 @@ Yapi-generator拥有直接生成可运行代码的能力，只需要极少的几
 
 Yapi-generator一共支持三种模式：单接口生成、批量接口生成与自动生成，这三种模式的区别很好理解分别是一次生成但接口
 代码、多接口代码、以Project为维度自动生成完整的微服务API,目前在1.0中仅支持单接口生成模式。
-####单接口生成模式
+#### 单接口生成模式
 只要通过一下简单的几个配置项
 ```
 #基础配置
@@ -66,9 +66,9 @@ interface:
 
 ![single-structure](./img/single-structure.png "single-structure")
 
-####批量接口生成模式
+#### 批量接口生成模式
 未上线
 
-####自动生成模式
+#### 自动生成模式
 未上线
 
